@@ -23,15 +23,14 @@ always @(posedge clk or posedge rst) begin
             registers[i] <= 32'b0; // Reset all registers to 0
         end
     end else begin
-        // Read from registers
-        rs1_data <= registers[rs1];
-        rs2_data <= registers[rs2];
-        
         // Write to register rd if write_enable is high and rd is not zero
         if (write_enable && rd != 5'b0) begin
             registers[rd] <= write_data;
         end
     end
 end
+
+assign rs1_data = (rs1 == 5'b0) ? 32'b0 : registers[rs1];
+assign rs2_data = (rs2 == 5'b0) ? 32'b0 : registers[rs2];
 
 endmodule 

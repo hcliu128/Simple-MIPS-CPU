@@ -16,7 +16,7 @@ always @(*) begin
         SUB: result = a - b;
         AND: result = a & b;
         OR: result = a | b;
-        SLT: result = (a < b) ? 1 : 0; // Set on less than
+        SLT: result = ($signed(a) < $signed(b)) ? 1 : 0; // Set on less than
         NOR: result = ~(a | b);
         XOR: result = a ^ b;
         SLL: result = a << b[4:0]; // Shift left logical
