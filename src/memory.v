@@ -18,7 +18,7 @@ module memory(
                 mem[i] <= 32'b0;
             end
         end else begin
-            if (mem_write) begin // little endian
+            if (mem_write && address != 0) begin // little endian
                 mem[address + 0] <= write_data[7:0]; 
                 mem[address + 1] <= write_data[15:8]; 
                 mem[address + 2] <= write_data[23:16]; 

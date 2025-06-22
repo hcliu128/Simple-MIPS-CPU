@@ -5,30 +5,32 @@
 module instruction_memory #(
     parameter DEPTH = 32
 ) (
-    input  logic [31:0] addr,      // byte address
-    output logic [31:0] instruction
+    input  [31:0] addr,      // byte address
+    output [31:0] instruction
 );
+    integer i;
 
-  // 32 words of 32-bit instructions
-  logic [31:0] imem [0:DEPTH-1];
 
-  // 初始化：硬編測試程式
-  initial begin
-    imem[0] = 32'h2001_0005; // ADDI R1, R0, 5
-    imem[1] = 32'h2002_000A; // ADDI R2, R0, 10
-    imem[2] = 32'h0022_1820; // ADD  R3, R1, R2
-    imem[3] = 32'hAC03_0000; // SW   R3, 0(R0)
-    imem[4] = 32'h8C04_0000; // LW   R4, 0(R0)
-    imem[5] = 32'h1022_0001; // BEQ  R1, R2, +1  (to instr[7])
-    imem[6] = 32'h0800_0008; // J    8            (to instr[8])
-    imem[7] = 32'h2005_0064; // ADDI R5, R0, 100  (label)
-    imem[8] = 32'h0000_0000; // NOP (end)
-    // 其餘預設 NOP
-    for (int i = 9; i < DEPTH; i++) 
-      imem[i] = 32'h0000_0000;
-  end
+    // 32 words of 32-bit instructions
+    logic [31:0] imem [0:DEPTH-1];
 
-  // 每次讀出 aligned word
-  assign instruction = imem[addr[6:2]];
+    // 初始化：硬編測試程式
+    initial begin
+        imem[0] = 32'h2001_0005; // ADDI R1, R0, 5
+        imem[1] = 32'h2002_000A; // ADDI R2, R0, 10
+        imem[2] = 32'h0022_1820; // ADD  R3, R1, R2
+        imem[3] = 32'hAC03_0000; // SW   R3, 0(R0)
+        imem[4] = 32'h8C04_0000; // LW   R4, 0(R0)
+        imem[5] = 32'h1022_0001; // BEQ  R1, R2, +1  (to instr[7])
+        imem[6] = 32'h0800_0008; // J    8            (to instr[8])
+        imem[7] = 32'h2005_0064; // ADDI R5, R0, 100  (label)
+        imem[8] = 32'h0000_0000; // NOP (end)
+        // 其餘預設 NOP
+        for (i = 9; i < DEPTH; i++) 
+        imem[i] = 32'h0000_0000;
+        end
+
+    // 每次讀出 aligned word
+    assign instruction = imem[addr[6:2]];
 
 endmodule

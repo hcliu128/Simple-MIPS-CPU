@@ -8,8 +8,8 @@ module reg_file(
     input [4:0] rd,
     input [31:0] write_data,
     input write_enable,
-    output reg [31:0] rs1_data,
-    output reg [31:0] rs2_data
+    output [31:0] rs1_data,
+    output [31:0] rs2_data
 );
 
 reg [31:0] registers [0:31]; // 32 registers of 32 bits each
@@ -17,8 +17,6 @@ integer i;
 
 always @(posedge clk or posedge rst) begin
     if (rst) begin
-        rs1_data <= 32'b0;
-        rs2_data <= 32'b0;
         for (i = 0; i < 32; i = i + 1) begin
             registers[i] <= 32'b0; // Reset all registers to 0
         end
@@ -30,7 +28,7 @@ always @(posedge clk or posedge rst) begin
     end
 end
 
-assign rs1_data = (rs1 == 5'b0) ? 32'b0 : registers[rs1];
-assign rs2_data = (rs2 == 5'b0) ? 32'b0 : registers[rs2];
+assign rs1_data = (rst) ? 32'b0 : registers[rs1];
+assign rs2_data = (rst) ? 32'b0 : registers[rs2];
 
 endmodule 
